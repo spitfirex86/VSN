@@ -1,0 +1,78 @@
+﻿<Window x:Class="VSN.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VSN"
+        xmlns:note="clr-namespace:VSN.Note"
+        xmlns:noteList="clr-namespace:VSN.NoteList"
+        xmlns:wpf="clr-namespace:VSN.WPF"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        mc:Ignorable="d"
+        Title="{Binding WindowTitle}"
+        Height="400" Width="500"
+        MinHeight="200" MinWidth="250"
+        d:DataContext="{d:DesignInstance local:MainViewModel}">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type note:PlainNoteViewModel}">
+            <note:PlainNoteView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type noteList:NoteListViewModel}">
+            <noteList:NoteListView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Menu Grid.Row="0" Grid.ColumnSpan="2">
+
+            <MenuItem Header="File">
+
+                <MenuItem Header="Open"
+                          Command="{Binding OpenCommand}" />
+
+                <MenuItem Header="Save"
+                          Command="{Binding SaveCommand}" />
+
+                <Separator />
+
+                <MenuItem Header="Close"
+                          Command="{x:Static wpf:CommonCommands.CloseAppCommand}" />
+
+            </MenuItem>
+
+        </Menu>
+
+        <Expander Grid.Row="1" Grid.Column="0"
+                  Padding="5 5 0 4"
+                  ExpandDirection="Left"
+                  IsExpanded="True">
+
+            <Expander.Header>
+                <TextBlock Text="Notes">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Expander.Header>
+
+            <ContentControl Content="{Binding NoteListViewModel}" />
+
+        </Expander>
+
+        <ContentControl Grid.Row="1" Grid.Column="1"
+                        Margin="5"
+                        Content="{Binding CurrentNote}"/>
+
+    </Grid>
+
+</Window>
