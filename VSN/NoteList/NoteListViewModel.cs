@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using VSN.Note;
 using VSN.WPF;
 
@@ -9,16 +10,22 @@ namespace VSN.NoteList
         public NoteListViewModel(MainViewModel viewModel)
         {
             ViewModel = viewModel;
+
+            DeleteNoteCommand = new RelayCommand(DeleteNote);
         }
+
+        public ICommand DeleteNoteCommand { get; set; }
 
         public MainViewModel ViewModel { get; }
 
-        public ObservableCollection<BaseNoteViewModel> Notes => ViewModel.Notes;
+        public int SelectedNoteIndex { get; set; }
 
-        public void ListItemDoubleClick(object sender)
+        public void ListItemDoubleClick(object parameter)
         {
-            if (sender is BaseNoteViewModel note)
+            if (parameter is BaseNoteViewModel note)
                 ViewModel.CurrentNote = note;
         }
+
+        public void DeleteNote() => ViewModel.DeleteNoteAtIndex(SelectedNoteIndex);
     }
 }

@@ -15,12 +15,15 @@
         MinHeight="200" MinWidth="250"
         d:DataContext="{d:DesignInstance local:MainViewModel}">
     <Window.Resources>
+
         <DataTemplate DataType="{x:Type note:PlainNoteViewModel}">
             <note:PlainNoteView />
         </DataTemplate>
+
         <DataTemplate DataType="{x:Type noteList:NoteListViewModel}">
             <noteList:NoteListView />
         </DataTemplate>
+
     </Window.Resources>
 
     <Grid>
@@ -52,22 +55,80 @@
 
         </Menu>
 
-        <Expander Grid.Row="1" Grid.Column="0"
-                  Padding="5 5 0 4"
-                  ExpandDirection="Left"
-                  IsExpanded="True">
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <Expander.Header>
-                <TextBlock Text="Notes">
-                    <TextBlock.LayoutTransform>
-                        <RotateTransform Angle="90" />
-                    </TextBlock.LayoutTransform>
-                </TextBlock>
-            </Expander.Header>
+            <Expander Grid.ColumnSpan="2"
+                      Padding="4 4 0 4"
+                      ExpandDirection="Left"
+                      IsExpanded="True">
 
-            <ContentControl Content="{Binding NoteListViewModel}" />
+                <Expander.Header>
+                    <TextBlock Text="Notes">
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="90" />
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Expander.Header>
 
-        </Expander>
+                <ContentControl Content="{Binding NoteListViewModel}"
+                                Margin="0 0 3 0"/>
+
+            </Expander>
+
+            <TextBlock Grid.Column="1"
+                       Panel.ZIndex="20"
+                       Width="29"
+                       Margin="0 100 0 0">
+
+            </TextBlock>
+
+            <WrapPanel Grid.Column="1"
+                       Panel.ZIndex="90"
+                       Width="24"
+                       Margin="5 0 0 5"
+                       VerticalAlignment="Bottom"
+                       HorizontalAlignment="Center"
+                       Orientation="Vertical">
+
+                <Separator />
+
+                <Button Style="{StaticResource SmallPlusButton}"
+                        Click="AddButtonClick"
+                        Margin="0 2 0 0"
+                        ToolTip="Add Note">
+                    <Button.ContextMenu>
+                        <ContextMenu ItemsSource="{x:Static note:NoteFactory.NoteTypes}">
+
+                            <ContextMenu.ItemContainerStyle>
+                                <Style TargetType="{x:Type MenuItem}">
+                                    <Setter Property="Command" Value="{Binding Path=DataContext.AddNoteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                                    <Setter Property="CommandParameter" Value="{Binding}" />
+                                </Style>
+                            </ContextMenu.ItemContainerStyle>
+
+                            <ContextMenu.ItemTemplate>
+                                <HierarchicalDataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </HierarchicalDataTemplate>
+                            </ContextMenu.ItemTemplate>
+
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+
+                <Button Style="{StaticResource SmallCrossButton}"
+                        Command="{Binding DeleteCurrentNoteCommand}"
+                        IsEnabled="{Binding CurrentNoteExists}"
+                        Margin="0 2 0 0"
+                        ToolTip="Delete Note" />
+
+            </WrapPanel>
+
+        </Grid>
 
         <ContentControl Grid.Row="1" Grid.Column="1"
                         Margin="5"

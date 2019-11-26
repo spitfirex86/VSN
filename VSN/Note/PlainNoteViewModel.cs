@@ -2,7 +2,7 @@
 {
     public class PlainNoteViewModel : BaseNoteViewModel
     {
-        public PlainNoteViewModel(string name, string content) : base(name)
+        public PlainNoteViewModel(string name = null, string content = null) : base(name)
         {
             Content = content;
         }

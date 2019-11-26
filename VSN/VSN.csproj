@@ -89,6 +89,8 @@
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Note\BaseNoteViewModel.cs" />
     <Compile Include="NoteList\NoteListViewModel.cs" />
+    <Compile Include="Note\NoteFactory.cs" />
+    <Compile Include="Note\NoteType.cs" />
     <Compile Include="Note\PlainNoteViewModel.cs" />
     <Compile Include="NoteList\NoteListView.xaml.cs">
       <DependentUpon>NoteListView.xaml</DependentUpon>
@@ -165,7 +167,12 @@
   <ItemGroup>
     <Resource Include="Resources\wfc.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\CancelSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AddSmall.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.5\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.5\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

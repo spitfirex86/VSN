@@ -4,7 +4,7 @@
     {
         public BaseNoteViewModel(string name)
         {
-            Name = name;
+            Name = name ?? "Untitled note";
         }
 
         public string Name { get; set; }

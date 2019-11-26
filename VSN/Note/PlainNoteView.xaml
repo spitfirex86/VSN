@@ -21,6 +21,9 @@
                    Text="{Binding Name}" />
 
         <TextBox Grid.Row="1"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 VerticalScrollBarVisibility="Auto"
                  Text="{Binding Content}" />
 
     </Grid>

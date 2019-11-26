@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace VSN.NoteList
@@ -17,6 +19,17 @@ namespace VSN.NoteList
         {
             if (DataContext is NoteListViewModel viewModel && sender is ListBoxItem item)
                 viewModel.ListItemDoubleClick(item.Content);
+        }
+
+        private void AddButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                ContextMenu contextMenu = button.ContextMenu;
+                contextMenu.PlacementTarget = button;
+                contextMenu.Placement = PlacementMode.Bottom;
+                contextMenu.IsOpen = true;
+            }
         }
     }
 }

@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VSN.NoteList"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:note="clr-namespace:VSN.Note"
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="120"
+             d:DesignHeight="400" d:DesignWidth="140"
              d:DataContext="{d:DesignInstance local:NoteListViewModel}">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -15,20 +17,23 @@
         </Grid.RowDefinitions>
 
         <ListBox Grid.Row="0"
-                 ItemsSource="{Binding Notes}"
-                 MinWidth="120"
-                 MaxWidth="200"
+                 ItemsSource="{Binding ViewModel.Notes}"
+                 SelectedIndex="{Binding SelectedNoteIndex}"
+                 Width="140"
                  dd:DragDrop.IsDragSource="true"
                  dd:DragDrop.IsDropTarget="true">
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}" />
+                    <TextBlock Text="{Binding Name}"
+                               TextWrapping="NoWrap"
+                               TextTrimming="CharacterEllipsis"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="MaxWidth" Value="136" />
                     <EventSetter Event="MouseDoubleClick" Handler="ListItemDoubleClick" />
                 </Style>
             </ListBox.ItemContainerStyle>
@@ -38,11 +43,38 @@
         <WrapPanel Grid.Row="1" Margin="0 2 0 0">
 
             <Button Style="{StaticResource SmallPlusButton}"
-                    Margin="0 0 2 0"/>
+                    Margin="0 0 2 0"
+                    Click="AddButtonClick"
+                    ToolTip="Add Note"
+                    ContextMenuService.Placement="Bottom">
 
-            <Button Style="{StaticResource SmallCrossButton}" />
+                <Button.ContextMenu>
+                    <ContextMenu ItemsSource="{x:Static note:NoteFactory.NoteTypes}">
+
+                        <ContextMenu.ItemContainerStyle>
+                            <Style TargetType="{x:Type MenuItem}">
+                                <Setter Property="Command" Value="{Binding Path=DataContext.AddNoteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                                <Setter Property="CommandParameter" Value="{Binding}" />
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
+
+                        <ContextMenu.ItemTemplate>
+                            <HierarchicalDataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </HierarchicalDataTemplate>
+                        </ContextMenu.ItemTemplate>
+
+                    </ContextMenu>
+                </Button.ContextMenu>
+
+            </Button>
+
+            <Button Style="{StaticResource SmallCrossButton}"
+                    Command="{Binding DeleteNoteCommand}"
+                    ToolTip="Delete Note"/>
 
         </WrapPanel>
+
             
     </Grid>
 </UserControl>
