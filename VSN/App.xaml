@@ -2,8 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:VSN"
-             Startup="OnStartup">
+             xmlns:settings="clr-namespace:VSN.Settings"
+             xmlns:utils="clr-namespace:VSN.Utils"
+             xmlns:converters="clr-namespace:VSN.Converters"
+             Startup="OnStartup"
+             Exit="OnExit">
     <Application.Resources>
+
+        <converters:BoolToFontFamilyConverter x:Key="BoolToFontFamilyConverter" />
+        <converters:BoolToTextWrappingConverter x:Key="BoolToTextWrappingConverter" />
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Padding" Value="5 2" />
@@ -12,6 +19,10 @@
         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
             <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style TargetType="MenuItem" x:Key="MenuBarItem">
+            <Setter Property="Padding" Value="8 2" />
         </Style>
 
         <Style TargetType="Button" x:Key="SmallIconButton">
@@ -26,6 +37,21 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
+        <Style TargetType="Path" x:Key="CenteredPath">
+            <Setter Property="Stretch" Value="Uniform" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="TextBox" x:Key="NoteTextBox">
+            <Setter Property="AcceptsTab" Value="True" />
+            <Setter Property="AcceptsReturn" Value="True" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="FontFamily" Value="{Binding FixedWidthFont, Source={x:Static settings:SharedBindings.AppSettings}, Converter={StaticResource BoolToFontFamilyConverter}}" />
+            <Setter Property="TextWrapping" Value="{Binding TextWrapping, Source={x:Static settings:SharedBindings.AppSettings}, Converter={StaticResource BoolToTextWrappingConverter}}" />
+        </Style>
+        
         <Style TargetType="Button" BasedOn="{StaticResource SmallIconButton}" x:Key="SmallPlusButton" x:Shared="False">
             <Setter Property="Content">
                 <Setter.Value>
@@ -40,6 +66,60 @@
                 <Setter.Value>
                     <Image Style="{StaticResource SmallIconImage}"
                            Source="Resources/CancelSmall.png" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource SmallIconButton}" x:Key="AddRowButton" x:Shared="False">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Style="{StaticResource SmallIconImage}"
+                           Source="Resources/AddRow.png" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource SmallIconButton}" x:Key="DeleteRowButton" x:Shared="False">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Style="{StaticResource SmallIconImage}"
+                           Source="Resources/DeleteRow.png" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource SmallIconButton}" x:Key="SmallArrowLeftButton" x:Shared="False">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Style="{StaticResource SmallIconImage}"
+                           Source="Resources/ArrowSmall.png">
+                        <Image.LayoutTransform>
+                            <RotateTransform Angle="90"></RotateTransform>
+                        </Image.LayoutTransform>
+                    </Image>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource SmallIconButton}" x:Key="SmallArrowRightButton" x:Shared="False">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Image Style="{StaticResource SmallIconImage}"
+                           Source="Resources/ArrowSmall.png">
+                        <Image.LayoutTransform>
+                            <RotateTransform Angle="-90"></RotateTransform>
+                        </Image.LayoutTransform>
+                    </Image>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ExpanderButtonRight">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Path Data="M0,0 L1,1 L0,2 Z"
+                          Style="{StaticResource CenteredPath}"
+                          Fill="{x:Static SystemColors.ControlTextBrush}" />
                 </Setter.Value>
             </Setter>
         </Style>

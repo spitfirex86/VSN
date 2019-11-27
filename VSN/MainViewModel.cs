@@ -14,6 +14,7 @@ namespace VSN
         public MainViewModel()
         {
             Notes = new ObservableCollection<BaseNoteViewModel>();
+            Notes.CollectionChanged += NotesOnCollectionChanged;
 
             NoteListViewModel = new NoteListViewModel(this);
 
@@ -42,19 +43,9 @@ namespace VSN
 
         public NoteListViewModel NoteListViewModel { get; }
 
-        private BaseNoteViewModel _currentNote;
+        public BaseNoteViewModel CurrentNote { get; set; }
 
-        public BaseNoteViewModel CurrentNote
-        {
-            get => _currentNote;
-            set
-            {
-                _currentNote = value;
-                CurrentNoteIndex = _currentNote != null ? Notes.IndexOf(_currentNote) : -1;
-            }
-        }
-
-        public int CurrentNoteIndex { get; set; }
+        public int CurrentNoteIndex => CurrentNote != null ? Notes.IndexOf(CurrentNote) : -1;
 
         public bool CurrentNoteExists => CurrentNote != null;
 
@@ -75,6 +66,7 @@ namespace VSN
                 FilePath = fileDialog.FileName;
                 FileName = fileDialog.SafeFileName;
                 Notes = XmlUtils.LoadNotesFromXml(FilePath);
+                Notes.CollectionChanged += NotesOnCollectionChanged;
             }
         }
 
@@ -122,14 +114,13 @@ namespace VSN
                     CurrentNote = noteIndex - 1 > -1 ? Notes[noteIndex - 1] : null;
 
                 Notes.RemoveAt(noteIndex);
-                RefreshStubbornProperties();
             }
         }
 
-        private void RefreshStubbornProperties()
+        private void NotesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            OnPropertyChanged(nameof(CanGoBack));
             OnPropertyChanged(nameof(CanGoForward));
+            OnPropertyChanged(nameof(CanGoBack));
         }
 
         public void PreviousNote()

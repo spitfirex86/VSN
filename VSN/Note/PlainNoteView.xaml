@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VSN"
              xmlns:note="clr-namespace:VSN.Note"
+             xmlns:settings="clr-namespace:VSN.Settings"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200"
              d:DataContext="{d:DesignInstance note:PlainNoteViewModel}">
@@ -18,13 +19,11 @@
                    Margin="0 0 0 2"
                    FontWeight="Bold"
                    FontSize="16"
-                   Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
+                   Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
 
         <TextBox Grid.Row="1"
-                 AcceptsReturn="True"
-                 AcceptsTab="True"
-                 VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
+                 Style="{StaticResource NoteTextBox}"
+                 Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
 
     </Grid>
 </UserControl>

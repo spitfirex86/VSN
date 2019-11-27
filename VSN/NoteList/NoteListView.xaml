@@ -42,10 +42,11 @@
 
         <WrapPanel Grid.Row="1" Margin="0 2 0 0">
 
-            <Button Style="{StaticResource SmallPlusButton}"
+            <Button Style="{StaticResource AddRowButton}"
                     Margin="0 0 2 0"
                     Click="AddButtonClick"
-                    ToolTip="Add Note"
+                    IsEnabled="{Binding IsItemSelected}"
+                    ToolTip="Insert Note Below"
                     ContextMenuService.Placement="Bottom">
 
                 <Button.ContextMenu>
@@ -53,7 +54,7 @@
 
                         <ContextMenu.ItemContainerStyle>
                             <Style TargetType="{x:Type MenuItem}">
-                                <Setter Property="Command" Value="{Binding Path=DataContext.AddNoteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                                <Setter Property="Command" Value="{Binding Path=DataContext.InsertNoteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" />
                                 <Setter Property="CommandParameter" Value="{Binding}" />
                             </Style>
                         </ContextMenu.ItemContainerStyle>
@@ -69,9 +70,10 @@
 
             </Button>
 
-            <Button Style="{StaticResource SmallCrossButton}"
+            <Button Style="{StaticResource DeleteRowButton}"
                     Command="{Binding DeleteNoteCommand}"
-                    ToolTip="Delete Note"/>
+                    IsEnabled="{Binding IsItemSelected}"
+                    ToolTip="Delete Selected Note"/>
 
         </WrapPanel>
 

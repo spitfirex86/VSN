@@ -7,12 +7,14 @@
         xmlns:note="clr-namespace:VSN.Note"
         xmlns:noteList="clr-namespace:VSN.NoteList"
         xmlns:wpf="clr-namespace:VSN.WPF"
+        xmlns:settings="clr-namespace:VSN.Settings"
         UseLayoutRounding="True"
         SnapsToDevicePixels="True"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}"
         Height="400" Width="500"
-        MinHeight="200" MinWidth="250"
+        MinHeight="250" MinWidth="350"
+        Closing="OnClosing"
         d:DataContext="{d:DesignInstance local:MainViewModel}">
     <Window.Resources>
 
@@ -23,6 +25,25 @@
         <DataTemplate DataType="{x:Type noteList:NoteListViewModel}">
             <noteList:NoteListView />
         </DataTemplate>
+
+        <ContextMenu x:Key="AddNoteContextMenu"
+                     ItemsSource="{x:Static note:NoteFactory.NoteTypes}"
+                     Placement="Right">
+
+            <ContextMenu.ItemContainerStyle>
+                <Style TargetType="{x:Type MenuItem}">
+                    <Setter Property="Command" Value="{Binding Path=DataContext.AddNoteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                    <Setter Property="CommandParameter" Value="{Binding}" />
+                </Style>
+            </ContextMenu.ItemContainerStyle>
+
+            <ContextMenu.ItemTemplate>
+                <HierarchicalDataTemplate>
+                    <TextBlock Text="{Binding DisplayName}" />
+                </HierarchicalDataTemplate>
+            </ContextMenu.ItemTemplate>
+
+        </ContextMenu>
 
     </Window.Resources>
 
@@ -36,23 +57,60 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Menu Grid.Row="0" Grid.ColumnSpan="2">
+        <Menu Grid.Row="0" Grid.ColumnSpan="2"
+              Background="{x:Static SystemColors.WindowBrush}"
+              BorderBrush="{x:Static SystemColors.ControlLightBrush}"
+              BorderThickness="0 0 0 1"
+              ItemContainerStyle="{StaticResource MenuBarItem}">
 
-            <MenuItem Header="File">
+            <MenuItem Header="_File">
 
-                <MenuItem Header="Open"
+                <MenuItem Header="_Open"
                           Command="{Binding OpenCommand}" />
 
-                <MenuItem Header="Save"
+                <MenuItem Header="_Save"
                           Command="{Binding SaveCommand}" />
 
-                <MenuItem Header="Save As..."
+                <MenuItem Header="Save _As..."
                           Command="{Binding SaveAsCommand}" />
 
                 <Separator />
 
-                <MenuItem Header="Close"
+                <MenuItem Header="_Close"
                           Command="{x:Static wpf:CommonCommands.CloseAppCommand}" />
+
+            </MenuItem>
+
+            <MenuItem Header="_Edit">
+
+                <MenuItem Header="_Undo"
+                          Command="{x:Static ApplicationCommands.Undo}"/>
+
+                <MenuItem Header="_Redo"
+                          Command="{x:Static ApplicationCommands.Redo}"/>
+
+                <Separator />
+
+                <MenuItem Header="Cu_t"
+                          Command="{x:Static ApplicationCommands.Cut}"/>
+
+                <MenuItem Header="_Copy"
+                          Command="{x:Static ApplicationCommands.Copy}"/>
+
+                <MenuItem Header="_Paste"
+                          Command="{x:Static ApplicationCommands.Paste}"/>
+
+            </MenuItem>
+
+            <MenuItem Header="_View">
+
+                <MenuItem Header="_Fixed-Width Font"
+                          IsCheckable="True"
+                          IsChecked="{Binding FixedWidthFont, Source={x:Static settings:SharedBindings.AppSettings}}" />
+
+                <MenuItem Header="_Word Wrap"
+                          IsCheckable="True"
+                          IsChecked="{Binding TextWrapping, Source={x:Static settings:SharedBindings.AppSettings}}" />
 
             </MenuItem>
 
@@ -97,51 +155,46 @@
                        HorizontalAlignment="Center"
                        Orientation="Vertical">
 
-                <Button Style="{StaticResource SmallIconButton}"
-                        Margin="0 2 0 0"
+                <Button Style="{StaticResource SmallArrowLeftButton}"
+                        Margin="0 3 0 0"
                         ToolTip="Previous Note"
                         IsEnabled="{Binding CanGoBack}"
-                        Command="{Binding PreviousNoteCommand}"
-                        Content="&lt;"/>
+                        Command="{Binding PreviousNoteCommand}"/>
 
-                <Button Style="{StaticResource SmallIconButton}"
-                        Margin="0 2 0 0"
+                <Button Style="{StaticResource SmallArrowRightButton}"
+                        Margin="0 3 0 0"
                         ToolTip="Next Note"
                         IsEnabled="{Binding CanGoForward}"
-                        Command="{Binding NextNoteCommand}"
-                        Content="&gt;"/>
+                        Command="{Binding NextNoteCommand}"/>
 
-                <Separator Margin="0 5 0 3" />
+                <Separator Margin="0 5 0 2" />
 
-                <Button Style="{StaticResource SmallPlusButton}"
-                        Click="AddButtonClick"
-                        Margin="0 2 0 0"
-                        ToolTip="Add Note">
-                    <Button.ContextMenu>
-                        <ContextMenu ItemsSource="{x:Static note:NoteFactory.NoteTypes}">
+                <StackPanel Margin="0 3 0 0" Name="ExpanderButtonAdd">
 
-                            <ContextMenu.ItemContainerStyle>
-                                <Style TargetType="{x:Type MenuItem}">
-                                    <Setter Property="Command" Value="{Binding Path=DataContext.AddNoteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
-                                    <Setter Property="CommandParameter" Value="{Binding}" />
-                                </Style>
-                            </ContextMenu.ItemContainerStyle>
+                    <Button Style="{StaticResource SmallPlusButton}"
+                            ToolTip="Add Plain Note"
+                            Command="{Binding DataContext.AddNoteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                            CommandParameter="{Binding [0]}"
+                            DataContext="{x:Static note:NoteFactory.NoteTypes}"
+                            ContextMenu="{StaticResource AddNoteContextMenu}"
+                            ContextMenuService.Placement="Right"
+                            ContextMenuService.PlacementTarget="{Binding ElementName=ExpanderButtonAdd}" />
 
-                            <ContextMenu.ItemTemplate>
-                                <HierarchicalDataTemplate>
-                                    <TextBlock Text="{Binding DisplayName}" />
-                                </HierarchicalDataTemplate>
-                            </ContextMenu.ItemTemplate>
+                    <Button Style="{StaticResource ExpanderButtonRight}"
+                            Height="12" Margin="0 -1 0 0" Padding="2"
+                            Click="AddButtonClick"
+                            ToolTip="Add Note..."
+                            ContextMenu="{StaticResource AddNoteContextMenu}"
+                            ContextMenuService.Placement="Right"
+                            ContextMenuService.PlacementTarget="{Binding ElementName=ExpanderButtonAdd}" />
 
-                        </ContextMenu>
-                    </Button.ContextMenu>
-                </Button>
+                </StackPanel>
 
                 <Button Style="{StaticResource SmallCrossButton}"
                         Command="{Binding DeleteCurrentNoteCommand}"
                         IsEnabled="{Binding CurrentNoteExists}"
-                        Margin="0 2 0 0"
-                        ToolTip="Delete Note" />
+                        Margin="0 3 0 0"
+                        ToolTip="Delete Note"/>
 
             </WrapPanel>
 

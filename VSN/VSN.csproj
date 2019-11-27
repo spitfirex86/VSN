@@ -60,6 +60,9 @@
     <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
     </Reference>
+    <Reference Include="Cyotek.Windows.Forms.FontDialog, Version=1.0.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cyotek.Windows.Forms.FontDialog.1.0.1\lib\net35\Cyotek.Windows.Forms.FontDialog.dll</HintPath>
+    </Reference>
     <Reference Include="GongSolutions.WPF.DragDrop, Version=2.0.0.0, Culture=neutral, PublicKeyToken=91f1945125b7a587, processorArchitecture=MSIL">
       <HintPath>..\packages\gong-wpf-dragdrop.2.1.0\lib\net45\GongSolutions.WPF.DragDrop.dll</HintPath>
     </Reference>
@@ -68,6 +71,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -86,6 +91,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Settings\AppSettings.cs" />
+    <Compile Include="Settings\SharedBindings.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Note\BaseNoteViewModel.cs" />
     <Compile Include="NoteList\NoteListViewModel.cs" />
@@ -98,6 +105,9 @@
     <Compile Include="Note\PlainNoteView.xaml.cs">
       <DependentUpon>PlainNoteView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BoolToFontFamilyConverter.cs" />
+    <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
+    <Compile Include="Utils\RegistryUtils.cs" />
     <Compile Include="Utils\XmlUtils.cs" />
     <Compile Include="WPF\AsyncRelayCommand.cs" />
     <Compile Include="WPF\BaseCommand.cs" />
@@ -173,6 +183,14 @@
   <ItemGroup>
     <Resource Include="Resources\AddSmall.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ArrowSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AddRow.png" />
+    <Resource Include="Resources\DeleteRow.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.5\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.5\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
