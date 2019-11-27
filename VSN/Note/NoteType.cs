@@ -4,13 +4,19 @@ namespace VSN.Note
 {
     public class NoteType
     {
-        public NoteType(string name, Func<BaseNoteViewModel> newInstance)
+        public NoteType(string name, string displayName, Type type, Func<BaseNoteViewModel> newInstance)
         {
             Name = name;
+            DisplayName = displayName;
+            NType = type;
             NewInstance = newInstance;
         }
 
         public string Name { get; }
+
+        public string DisplayName { get; }
+
+        public Type NType { get; }
 
         public Func<BaseNoteViewModel> NewInstance { get; }
     }

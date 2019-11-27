@@ -18,13 +18,13 @@
                    Margin="0 0 0 2"
                    FontWeight="Bold"
                    FontSize="16"
-                   Text="{Binding Name}" />
+                   Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
 
         <TextBox Grid.Row="1"
                  AcceptsReturn="True"
                  AcceptsTab="True"
                  VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Content}" />
+                 Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, Delay=500}" />
 
     </Grid>
 </UserControl>

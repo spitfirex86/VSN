@@ -46,6 +46,9 @@
                 <MenuItem Header="Save"
                           Command="{Binding SaveCommand}" />
 
+                <MenuItem Header="Save As..."
+                          Command="{Binding SaveAsCommand}" />
+
                 <Separator />
 
                 <MenuItem Header="Close"
@@ -94,7 +97,21 @@
                        HorizontalAlignment="Center"
                        Orientation="Vertical">
 
-                <Separator />
+                <Button Style="{StaticResource SmallIconButton}"
+                        Margin="0 2 0 0"
+                        ToolTip="Previous Note"
+                        IsEnabled="{Binding CanGoBack}"
+                        Command="{Binding PreviousNoteCommand}"
+                        Content="&lt;"/>
+
+                <Button Style="{StaticResource SmallIconButton}"
+                        Margin="0 2 0 0"
+                        ToolTip="Next Note"
+                        IsEnabled="{Binding CanGoForward}"
+                        Command="{Binding NextNoteCommand}"
+                        Content="&gt;"/>
+
+                <Separator Margin="0 5 0 3" />
 
                 <Button Style="{StaticResource SmallPlusButton}"
                         Click="AddButtonClick"
@@ -112,7 +129,7 @@
 
                             <ContextMenu.ItemTemplate>
                                 <HierarchicalDataTemplate>
-                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding DisplayName}" />
                                 </HierarchicalDataTemplate>
                             </ContextMenu.ItemTemplate>
 

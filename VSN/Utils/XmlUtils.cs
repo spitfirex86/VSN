@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using VSN.Note;
 
@@ -8,16 +9,16 @@ namespace VSN.Utils
 {
     public static class XmlUtils
     {
+        //TODO: Handle XML parse errors
+
         public static void SaveNotesToXml(string filename, IEnumerable<BaseNoteViewModel> notes)
         {
-            //TODO
-
             XElement xmlContainer = new XElement("Notes");
 
             foreach (BaseNoteViewModel note in notes)
             {
-                if (note is PlainNoteViewModel plainNote)
-                    xmlContainer.Add(new XElement("Note", new XElement("Name", plainNote.Name), new XElement("Type", 0), new XElement("Content", plainNote.Content)));
+                if (NoteFactory.NoteTypesByType.TryGetValue(note.GetType(), out NoteType noteType))
+                    xmlContainer.Add(new XElement(noteType.Name, new XAttribute("Name", note.Name), note.GetXmlContent()));
             }
 
             new XDocument(xmlContainer).Save(filename);
@@ -25,8 +26,6 @@ namespace VSN.Utils
 
         public static ObservableCollection<BaseNoteViewModel> LoadNotesFromXml(string filename)
         {
-            //TODO
-
             if (!File.Exists(filename))
                 return null;
 
@@ -36,9 +35,14 @@ namespace VSN.Utils
 
             foreach (XElement element in xml.Element("Notes").Elements())
             {
-                if (int.Parse(element.Element("Type").Value) == 0)
+                if (NoteFactory.NoteTypesByName.TryGetValue(element.Name.LocalName, out NoteType noteType))
                 {
-                    notes.Add(new PlainNoteViewModel(element.Element("Name").Value, element.Element("Content").Value));
+                    BaseNoteViewModel note = noteType.NewInstance();
+
+                    note.Name = element.Attribute("Name").Value;
+                    note.SetContentFromXml(element.Elements().First());
+
+                    notes.Add(note);
                 }
             }
 

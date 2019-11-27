@@ -1,12 +1,19 @@
-﻿namespace VSN.Note
+﻿using System.Xml.Linq;
+using VSN.WPF;
+
+namespace VSN.Note
 {
-    public class BaseNoteViewModel
+    public abstract class BaseNoteViewModel : BaseViewModel
     {
-        public BaseNoteViewModel(string name)
+        protected BaseNoteViewModel(string name)
         {
             Name = name ?? "Untitled note";
         }
 
         public string Name { get; set; }
+
+        public abstract XElement GetXmlContent();
+
+        public abstract void SetContentFromXml(XElement element);
     }
 }

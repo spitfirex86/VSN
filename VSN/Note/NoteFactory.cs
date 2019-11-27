@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VSN.Note
 {
@@ -7,8 +8,12 @@ namespace VSN.Note
     {
         public static List<NoteType> NoteTypes = new List<NoteType>
         {
-            new NoteType("Plain Note", () => new PlainNoteViewModel()),
-            new NoteType("Multi Note", () => throw new NotImplementedException())
+            new NoteType("PlainNote", "Plain Note", typeof(PlainNoteViewModel), () => new PlainNoteViewModel()),
+            //new NoteType("MultiNote", "Multi Note", null, () => throw new NotImplementedException())
         };
+
+        public static Dictionary<string, NoteType> NoteTypesByName = NoteTypes.ToDictionary(x => x.Name);
+
+        public static Dictionary<Type, NoteType> NoteTypesByType = NoteTypes.ToDictionary(x => x.NType);
     }
 }
