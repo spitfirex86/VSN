@@ -48,8 +48,8 @@
             <Setter Property="AcceptsReturn" Value="True" />
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
-            <Setter Property="FontFamily" Value="{Binding FixedWidthFont, Source={x:Static settings:SharedBindings.AppSettings}, Converter={StaticResource BoolToFontFamilyConverter}}" />
-            <Setter Property="TextWrapping" Value="{Binding TextWrapping, Source={x:Static settings:SharedBindings.AppSettings}, Converter={StaticResource BoolToTextWrappingConverter}}" />
+            <Setter Property="FontFamily" Value="{Binding Dictionary[FixedWidthFont].Value, Source={x:Static settings:StaticObjects.Settings}, Converter={StaticResource BoolToFontFamilyConverter}}" />
+            <Setter Property="TextWrapping" Value="{Binding Dictionary[TextWrapping].Value, Source={x:Static settings:StaticObjects.Settings}, Converter={StaticResource BoolToTextWrappingConverter}}" />
         </Style>
         
         <Style TargetType="Button" BasedOn="{StaticResource SmallIconButton}" x:Key="SmallPlusButton" x:Shared="False">

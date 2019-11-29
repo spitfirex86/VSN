@@ -1,4 +1,4 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
 using Microsoft.Win32;
 using VSN.Settings;
 
@@ -8,26 +8,26 @@ namespace VSN.Utils
     {
         private const string RegKey = @"SOFTWARE\Spitfire\VSN";
 
-        public static void SaveSettings(AppSettings settings)
+        public static void SaveSettings()
         {
             using (RegistryKey key = Registry.CurrentUser.CreateSubKey(RegKey))
             {
-                key.SetValue("FixedWidthFont", settings.FixedWidthFont, RegistryValueKind.DWord);
-                key.SetValue("TextWrapping", settings.TextWrapping, RegistryValueKind.DWord);
+                foreach (KeyValuePair<string, ToggleableOption> option in StaticObjects.Settings.Dictionary)
+                    key.SetValue(option.Key, option.Value.Value, RegistryValueKind.DWord);
             }
         }
 
-        public static AppSettings LoadSettings()
+        public static void LoadSettings()
         {
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RegKey))
             {
-                if (key == null || key.ValueCount <= 0) 
-                    return new AppSettings();
+                if (key == null || key.ValueCount <= 0) return;
 
-                int fixedWidthFont = (int) key.GetValue("FixedWidthFont");
-                int textWrapping = (int) key.GetValue("TextWrapping");
-
-                return new AppSettings(fixedWidthFont == 1, textWrapping == 1);
+                foreach (KeyValuePair<string, ToggleableOption> option in StaticObjects.Settings.Dictionary)
+                {
+                    int? value = (int?) key.GetValue(option.Key);
+                    if (value != null) option.Value.Value = value == 1;
+                }
             }
         }
     }

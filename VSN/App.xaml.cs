@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using VSN.Settings;
+using System.Windows.Shell;
 using VSN.Utils;
 
 namespace VSN
@@ -11,15 +11,18 @@ namespace VSN
     {
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            SharedBindings.AppSettings = RegistryUtils.LoadSettings();
+            RegistryUtils.LoadSettings();
 
-            MainWindow = new MainWindow(new MainViewModel());
+            JumpList jumpList = new JumpList {ShowRecentCategory = true};
+            JumpList.SetJumpList(Current, jumpList);
+
+            MainWindow = new MainWindow(new MainViewModel(e.Args.Length == 1 ? e.Args[0] : null));
             MainWindow.Show();
         }
 
         private void OnExit(object sender, ExitEventArgs e)
         {
-            RegistryUtils.SaveSettings(SharedBindings.AppSettings);
+            RegistryUtils.SaveSettings();
         }
     }
 }

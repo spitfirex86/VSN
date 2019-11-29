@@ -1,9 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Shell;
 using Microsoft.Win32;
 using VSN.Note;
 using VSN.NoteList;
+using VSN.Settings;
 using VSN.Utils;
 using VSN.WPF;
 
@@ -11,10 +15,14 @@ namespace VSN
 {
     public class MainViewModel : BaseViewModel
     {
-        public MainViewModel()
+        public MainViewModel(string filePath = null)
         {
-            Notes = new ObservableCollection<BaseNoteViewModel>();
-            Notes.CollectionChanged += NotesOnCollectionChanged;
+            if (!string.IsNullOrEmpty(filePath)) OpenPath(filePath);
+            else
+            {
+                Notes = new ObservableCollection<BaseNoteViewModel>();
+                Notes.CollectionChanged += NotesOnCollectionChanged;
+            }
 
             NoteListViewModel = new NoteListViewModel(this);
 
@@ -55,19 +63,24 @@ namespace VSN
 
         public string WindowTitle => "VSN" + (FileName != null ? " - " + FileName : null) + (CurrentNote != null ? " - " + CurrentNote.Name : null);
 
+        public void OpenPath(string filePath, string fileName = null)
+        {
+            CurrentNote = null;
+            FilePath = filePath;
+            FileName = fileName ?? Path.GetFileName(filePath);
+
+            Notes = XmlUtils.LoadNotesFromXml(FilePath);
+            Notes.CollectionChanged += NotesOnCollectionChanged;
+
+            JumpList.AddToRecentCategory(FilePath);
+        }
+
         public void Open()
         {
             var fileDialog = new OpenFileDialog {Filter = "XML File (*.xml)|*.xml"};
             var result = fileDialog.ShowDialog();
 
-            if (result == true)
-            {
-                CurrentNote = null;
-                FilePath = fileDialog.FileName;
-                FileName = fileDialog.SafeFileName;
-                Notes = XmlUtils.LoadNotesFromXml(FilePath);
-                Notes.CollectionChanged += NotesOnCollectionChanged;
-            }
+            if (result == true) OpenPath(fileDialog.FileName, fileDialog.SafeFileName);
         }
 
         public void Save()
@@ -108,13 +121,19 @@ namespace VSN
 
         public void DeleteNoteAtIndex(int noteIndex)
         {
-            if (noteIndex > -1)
-            {
-                if (CurrentNote == Notes[noteIndex])
-                    CurrentNote = noteIndex - 1 > -1 ? Notes[noteIndex - 1] : null;
+            if (noteIndex <= -1) return;
 
-                Notes.RemoveAt(noteIndex);
+            if (StaticObjects.Settings.Dictionary["AskBeforeDelete"].Value)
+            {
+                var result = MessageBox.Show($"Are you sure you want to delete '{Notes[noteIndex].Name}'?",
+                "VSN", MessageBoxButton.YesNo);
+                if (result != MessageBoxResult.Yes) return;
             }
+            
+            if (CurrentNote == Notes[noteIndex])
+                CurrentNote = noteIndex - 1 > -1 ? Notes[noteIndex - 1] : null;
+
+            Notes.RemoveAt(noteIndex);
         }
 
         private void NotesOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

@@ -85,8 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Settings\AppSettings.cs" />
-    <Compile Include="Settings\SharedBindings.cs" />
+    <Compile Include="Settings\StaticObjects.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Note\BaseNoteViewModel.cs" />
     <Compile Include="NoteList\NoteListViewModel.cs" />
@@ -101,6 +100,8 @@
     </Compile>
     <Compile Include="Converters\BoolToFontFamilyConverter.cs" />
     <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
+    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\ToggleableOption.cs" />
     <Compile Include="Utils\RegistryUtils.cs" />
     <Compile Include="Utils\XmlUtils.cs" />
     <Compile Include="WPF\AsyncRelayCommand.cs" />

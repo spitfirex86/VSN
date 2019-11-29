@@ -47,6 +47,22 @@
 
     </Window.Resources>
 
+    <Window.InputBindings>
+
+        <KeyBinding Key="W" Modifiers="Control"
+                    Command="{x:Static wpf:CommonCommands.CloseWindowCommand}" />
+
+        <KeyBinding Key="O" Modifiers="Control"
+                    Command="{Binding OpenCommand}" />
+
+        <KeyBinding Key="S" Modifiers="Control"
+                    Command="{Binding SaveCommand}" />
+
+        <KeyBinding Key="S" Modifiers="Control+Shift"
+                    Command="{Binding SaveAsCommand}" />
+
+    </Window.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -66,18 +82,22 @@
             <MenuItem Header="_File">
 
                 <MenuItem Header="_Open"
+                          InputGestureText="Ctrl+O"
                           Command="{Binding OpenCommand}" />
 
                 <MenuItem Header="_Save"
+                          InputGestureText="Ctrl+S"
                           Command="{Binding SaveCommand}" />
 
                 <MenuItem Header="Save _As..."
+                          InputGestureText="Ctrl+Shift+S"
                           Command="{Binding SaveAsCommand}" />
 
                 <Separator />
 
-                <MenuItem Header="_Close"
-                          Command="{x:Static wpf:CommonCommands.CloseAppCommand}" />
+                <MenuItem Header="E_xit"
+                          InputGestureText="Ctrl+W"
+                          Command="{x:Static wpf:CommonCommands.CloseWindowCommand}" />
 
             </MenuItem>
 
@@ -102,15 +122,15 @@
 
             </MenuItem>
 
-            <MenuItem Header="_View">
-
-                <MenuItem Header="_Fixed-Width Font"
-                          IsCheckable="True"
-                          IsChecked="{Binding FixedWidthFont, Source={x:Static settings:SharedBindings.AppSettings}}" />
-
-                <MenuItem Header="_Word Wrap"
-                          IsCheckable="True"
-                          IsChecked="{Binding TextWrapping, Source={x:Static settings:SharedBindings.AppSettings}}" />
+            <MenuItem Header="_Settings"
+                      ItemsSource="{Binding Dictionary, Source={x:Static settings:StaticObjects.Settings}}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Header" Value="{Binding Value.DisplayName}" />
+                        <Setter Property="IsCheckable" Value="True" />
+                        <Setter Property="IsChecked" Value="{Binding Value.Value}" />
+                    </Style>
+                </MenuItem.ItemContainerStyle>
 
             </MenuItem>
 
