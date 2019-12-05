@@ -44,12 +44,26 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
+        <Style TargetType="TextBox" x:Key="NoteTitleBox">
+            <Setter Property="Padding" Value="2 1" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
         <Style TargetType="TextBox" x:Key="NoteTextBox">
             <Setter Property="AcceptsTab" Value="True" />
             <Setter Property="AcceptsReturn" Value="True" />
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="Padding" Value="2" />
             <Setter Property="FontFamily" Value="{Binding Dictionary[FixedWidthFont].Value, Source={x:Static settings:StaticObjects.Settings}, Converter={StaticResource BoolToFontFamilyConverter}}" />
+            <Setter Property="TextWrapping" Value="{Binding Dictionary[TextWrapping].Value, Source={x:Static settings:StaticObjects.Settings}, Converter={StaticResource BoolToTextWrappingConverter}}" />
+        </Style>
+
+        <Style TargetType="TextBox" x:Key="ListItemTextBox">
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="2" />
             <Setter Property="TextWrapping" Value="{Binding Dictionary[TextWrapping].Value, Source={x:Static settings:StaticObjects.Settings}, Converter={StaticResource BoolToTextWrappingConverter}}" />
         </Style>
         
@@ -123,6 +137,14 @@
                           Fill="{x:Static SystemColors.ControlTextBrush}" />
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="VerySmallButton">
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Height" Value="18" />
+            <Setter Property="Width" Value="18" />
+            <Setter Property="Padding" Value="5" />
         </Style>
          
     </Application.Resources>

@@ -16,14 +16,11 @@
         </Grid.RowDefinitions>
 
         <TextBox Grid.Row="0"
-                   Margin="0 0 0 2"
-                   Padding="2 1"
-                   FontWeight="Bold"
-                   FontSize="16"
-                   Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
+                 Margin="0 0 0 2"
+                 Style="{StaticResource NoteTitleBox}"
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
 
         <TextBox Grid.Row="1"
-                 Padding="2"
                  Style="{StaticResource NoteTextBox}"
                  Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
 

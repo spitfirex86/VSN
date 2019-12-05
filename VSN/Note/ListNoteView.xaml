@@ -37,12 +37,17 @@
                    Style="{StaticResource SmallIconImage}" />
         </ToggleButton>
 
-
         <Border Grid.Row="1" Grid.Column="0"
                 Grid.ColumnSpan="2"
                 BorderThickness="1"
                 BorderBrush="{x:Static SystemColors.ControlDarkBrush}">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy As Text"
+                                  Command="{Binding CopyAsTextCommand}"/>
+                    </ContextMenu>
+                </ScrollViewer.ContextMenu>
                 <StackPanel>
 
                     <ItemsControl ItemsSource="{Binding Content}"
@@ -65,50 +70,56 @@
                                                Fill="Transparent"
                                                Focusable="False"/>
 
-                                    <BulletDecorator DockPanel.Dock="Left" 
-                                                     VerticalAlignment="Center"
-                                                     Focusable="False"
-                                                     Visibility="{Binding DataContext.Checkboxes,
-                                                                          RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl},
-                                                                          Converter={StaticResource BoolToVisibilityConverter},
-                                                                          ConverterParameter=1}"
-                                                     Margin="8 1 3 0">
-                                        <BulletDecorator.Bullet>
-                                            <Ellipse Height="5" Width="5"
-                                                     Fill="{x:Static SystemColors.ControlTextBrush}"/>
-                                        </BulletDecorator.Bullet>
-                                    </BulletDecorator>
+                                    <DockPanel DockPanel.Dock="Left"
+                                               Focusable="False"
+                                               VerticalAlignment="Top"
+                                               Height="22">
 
-                                    <CheckBox DockPanel.Dock="Left"
-                                              VerticalAlignment="Center"
-                                              Margin="5 0 3 0"
-                                              IsChecked="{Binding IsChecked}"
-                                              Visibility="{Binding DataContext.Checkboxes,
-                                                                   RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl},
-                                                                   Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <BulletDecorator Focusable="False"
+                                                         VerticalAlignment="Center"
+                                                         Margin="8 1 3 0"
+                                                         Visibility="{Binding DataContext.Checkboxes,
+                                                                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl},
+                                                                              Converter={StaticResource BoolToVisibilityConverter},
+                                                                              ConverterParameter=1}">
+                                            <BulletDecorator.Bullet>
+                                                <Ellipse Height="5" Width="5"
+                                                         Fill="{x:Static SystemColors.ControlTextBrush}" />
+                                            </BulletDecorator.Bullet>
+                                        </BulletDecorator>
 
-                                    <Button DockPanel.Dock="Right"
-                                            VerticalAlignment="Center"
-                                            Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                            CommandParameter="{Binding}"
-                                            ToolTip="Delete Item"
-                                            BorderBrush="Transparent"
-                                            Background="Transparent"
-                                            Focusable="False"
-                                            Height="18"
-                                            Width="18"
-                                            dd:DragDrop.DragSourceIgnore="True">
-                                        <Button.Content>
-                                            <Path Data="M0,0 L1,1 M1,0 L0,1"
-                                                  Stroke="{x:Static SystemColors.ControlTextBrush}"
-                                                  Style="{StaticResource CenteredPath}"/>
-                                        </Button.Content>
-                                    </Button>
+                                        <CheckBox VerticalAlignment="Center"
+                                                  Margin="5 0 3 0"
+                                                  IsChecked="{Binding IsChecked}"
+                                                  Visibility="{Binding DataContext.Checkboxes,
+                                                                       RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl},
+                                                                       Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                    </DockPanel>
+
+                                    <DockPanel DockPanel.Dock="Right"
+                                               Focusable="False"
+                                               VerticalAlignment="Top"
+                                               Height="22">
+
+                                        <Button VerticalAlignment="Center"
+                                                Style="{StaticResource VerySmallButton}"
+                                                Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                ToolTip="Delete Item"
+                                                Focusable="False"
+                                                dd:DragDrop.DragSourceIgnore="True">
+                                            <Button.Content>
+                                                <Path Data="M0,0 L1,1 M1,0 L0,1"
+                                                      Stroke="{x:Static SystemColors.ControlTextBrush}"
+                                                      Style="{StaticResource CenteredPath}"/>
+                                            </Button.Content>
+                                        </Button>
+
+                                    </DockPanel>
 
                                     <TextBox VerticalAlignment="Center"
-                                             Padding="2"
-                                             BorderBrush="Transparent"
-                                             Background="Transparent"
+                                             Style="{StaticResource ListItemTextBox}"
                                              Text="{Binding Text, UpdateSourceTrigger=PropertyChanged, Delay=200}"
                                              dd:DragDrop.DragSourceIgnore="True">
                                     </TextBox>
