@@ -85,6 +85,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Note\ListNoteView.xaml.cs">
+      <DependentUpon>ListNoteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Note\ListNoteViewModel.cs" />
     <Compile Include="Settings\StaticObjects.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Note\BaseNoteViewModel.cs" />
@@ -108,6 +113,7 @@
     <Compile Include="WPF\BaseCommand.cs" />
     <Compile Include="WPF\BaseViewModel.cs" />
     <Compile Include="WPF\CommonCommands.cs" />
+    <Compile Include="WPF\DataTemplateManager.cs" />
     <Compile Include="WPF\RelayCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -122,6 +128,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NoteList\NoteListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Note\ListNoteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -185,7 +195,9 @@
     <Resource Include="Resources\AddRow.png" />
     <Resource Include="Resources\DeleteRow.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\checkbox.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.5\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.5\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

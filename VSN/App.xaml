@@ -11,6 +11,7 @@
 
         <converters:BoolToFontFamilyConverter x:Key="BoolToFontFamilyConverter" />
         <converters:BoolToTextWrappingConverter x:Key="BoolToTextWrappingConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Padding" Value="5 2" />

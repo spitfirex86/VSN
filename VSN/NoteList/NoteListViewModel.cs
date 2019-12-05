@@ -24,27 +24,21 @@ namespace VSN.NoteList
 
         public bool IsItemSelected => SelectedNoteIndex > -1;
 
-        public void ListItemDoubleClick(object parameter)
-        {
-            if (parameter is BaseNoteViewModel note)
-                ViewModel.CurrentNote = note;
-        }
+        public void ChangeCurrentNote(BaseNoteViewModel note) => ViewModel.CurrentNote = note;
 
         public void DeleteNote() => ViewModel.DeleteNoteAtIndex(SelectedNoteIndex);
 
         public void InsertNote(object parameter)
         {
-            if (parameter is NoteType noteType)
-            {
-                BaseNoteViewModel newNote = noteType.NewInstance();
+            if (!(parameter is NoteType noteType)) return;
+            BaseNoteViewModel newNote = noteType.NewInstance();
 
-                if (IsItemSelected)
-                    ViewModel.Notes.Insert(SelectedNoteIndex + 1, newNote);
-                else
-                    ViewModel.Notes.Add(newNote);
+            if (IsItemSelected)
+                ViewModel.Notes.Insert(SelectedNoteIndex + 1, newNote);
+            else
+                ViewModel.Notes.Add(newNote);
 
-                ViewModel.CurrentNote = newNote;
-            }
+            ViewModel.CurrentNote = newNote;
         }
     }
 }

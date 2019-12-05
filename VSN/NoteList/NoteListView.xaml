@@ -19,6 +19,7 @@
         <ListBox Grid.Row="0"
                  ItemsSource="{Binding ViewModel.Notes}"
                  SelectedIndex="{Binding SelectedNoteIndex}"
+                 AlternationCount="3"
                  Width="140"
                  dd:DragDrop.IsDragSource="true"
                  dd:DragDrop.IsDropTarget="true">
@@ -26,6 +27,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"
+                               Name="ABlock"
                                TextWrapping="NoWrap"
                                TextTrimming="CharacterEllipsis"/>
                 </DataTemplate>
